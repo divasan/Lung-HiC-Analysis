@@ -27,9 +27,6 @@ The GRCh38 mapping-quality-thresholded `.hic` contact matrices are retrieved usi
 ```bash
 bash scripts/encode/download_encode_hic.sh
 ```
-
-The script queries ENCODE for the corresponding processed contact matrices and downloads them using `wget`, with progress reporting and support for resuming interrupted downloads.
-
 ## 2. Hi-C processing using Juicer
 
 In-house human lung Hi-C sequencing data were processed using [Juicer v1.6](https://github.com/aidenlab/juicer) on a SLURM-based high-performance computing cluster.
