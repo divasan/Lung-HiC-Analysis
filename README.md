@@ -1,15 +1,19 @@
 
 # Lung Hi-C Analysis
 
-### Reproducible analysis of 3D genome organization in healthy and COPD human lung tissue
+### 3D genome organization in healthy and COPD human lung tissue
 
-This repository contains scripts for processing and analyzing Hi-C sequencing data from human lung tissue, including in-house samples and publicly available datasets from the ENCODE consortium.
+## Overview
 
-The workflow begins with downloading public Hi-C contact matrices and processing in-house sequencing data using Juicer.
+This project investigates three-dimensional genome organization in healthy and chronic obstructive pulmonary disease (COPD) human lung tissue using Hi-C sequencing data.
 
-## 1. Download publicly available ENCODE lung Hi-C datasets
+Hi-C data from three healthy control and three COPD lung samples are analyzed alongside publicly available human lung Hi-C datasets from ENCODE. Sequencing reads are processed using Juicer to generate multiresolution chromatin contact matrices, providing the basis for downstream analysis of chromatin architecture.
 
-Six human lung Hi-C datasets were selected from [ENCODE](https://www.encodeproject.org/). These experiments represent four individual donors.
+## 1. Human lung Hi-C datasets
+
+The study includes six publicly available human lung Hi-C experiments from [ENCODE](https://www.encodeproject.org/), representing four individual donors, and six in-house Hi-C samples (three healthy controls and three COPD lungs).
+
+Raw sequencing data for the ENCODE experiments are accessible through the linked GEO records and associated SRA accessions.
 
 | ENCODE accession | GEO accession | Donor | Lung tissue |
 |---|---|---|---|
@@ -20,50 +24,77 @@ Six human lung Hi-C datasets were selected from [ENCODE](https://www.encodeproje
 | [ENCSR068FXF](https://www.encodeproject.org/experiments/ENCSR068FXF/) | [GSE237333](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE237333) | W78, male, 60 | Left lower lobe |
 | [ENCSR892BZA](https://www.encodeproject.org/experiments/ENCSR892BZA/) | [GSE237904](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE237904) | W62, female, 16 | Left lung |
 
-The GRCh38 mapping-quality-thresholded `.hic` contact matrices are retrieved using the download script:
+The in-house Hi-C datasets will be deposited in GEO upon public release.
 
-`scripts/encode/download_encode_hic.sh`
+**In-house Hi-C data (3 healthy, 3 COPD):** GEO accession to be added upon release.
 
-```bash
-bash scripts/encode/download_encode_hic.sh
-```
 ## 2. Hi-C processing using Juicer
 
-In-house human lung Hi-C sequencing data were processed using [Juicer v1.6](https://github.com/aidenlab/juicer) on a SLURM-based high-performance computing cluster.
+Hi-C sequencing data were processed using [Juicer v1.6](https://github.com/aidenlab/juicer) with BWA alignment to GRCh38 (hg38) and restriction-site information corresponding to the Arima Hi-C protocol.
 
-The processing configuration used:
+### Software versions
 
-| Parameter | Setting |
+| Software | Version |
 |---|---|
-| Reference genome | GRCh38 (hg38) |
-| Hi-C protocol | Arima |
-| Alignment software | BWA |
-| Job scheduler | SLURM |
-| CPUs requested for submission job | 24 |
-| Memory requested for submission job | 400 GB |
+| Juicer | 1.6 (installation directory; exact release to be confirmed) |
+| BWA | 0.7.17-r1188 |
+| Java (OpenJDK) | 25.0.3 |
+| samtools | 1.17 |
+| SLURM | 25.05.6 |
 
-Juicer performs read alignment, processing and filtering of Hi-C contact pairs, duplicate removal, and generation of multiresolution `.hic` contact matrices.
+### Juicer installation
+### Install Juicer
 
-The SLURM submission script is provided in:
+Juicer v1.6 was used for Hi-C data processing. The software is available from the [Aiden Lab GitHub repository](https://github.com/aidenlab/juicer).
 
-`scripts/juicer/run_juicer.slurm`
+```bash
+git clone https://github.com/aidenlab/juicer.git
+```
 
-The script requires paths to the Juicer installation, reference genome, chromosome sizes, restriction-site file, and sample input directories to be configured for the user's computing environment.
+The Juicer installation path and required reference files are defined in `config/juicer_config.sh`.
 
-## 3. Contact-matrix integration
 
-The ENCODE contact matrices and in-house Juicer-generated matrices are intended for integration into a combined human lung Hi-C contact map.
+## 3. Juicer configuration
 
-The merging workflow and downstream loop-calling analysis will be documented after validation.
+The Juicer installation paths, reference files, input directories, and processing parameters are specified in `config/juicer_config.sh`.
 
-## Software
+The GRCh38 reference genome (`hg38.fa`) was indexed using BWA:
 
-- [Juicer v1.6](https://github.com/aidenlab/juicer)
-- BWA
-- SLURM
-- `wget`
-- Python 3 (for ENCODE metadata retrieval)
+```bash
+bwa index /path/to/reference/hg38.fa
+```
 
-## Status
+The Arima restriction-site file (`hg38_Arima.txt`) can be generated using the [Juicer tools](https://github.com/aidenlab/juicer). The chromosome sizes (`hg38.chrom.sizes`) and restriction-site file must correspond to the same reference genome assembly.
 
-This repository is under active development. Scripts and instructions will be updated as each analysis step is validated.
+## 4. Input FASTQ files
+
+The planned sample manifest, `config/samples.tsv`, contains the sample identifier and full paths to paired-end FASTQ files.
+
+| Column | Description |
+|---|---|
+| `sample_id` | Sample identifier |
+| `r1_fastq` | Full path to R1 FASTQ |
+| `r2_fastq` | Full path to R2 FASTQ |
+
+Example:
+
+```text
+sample_id	r1_fastq	r2_fastq
+sample_A	/data/HiC/sample_A_R1.fastq.gz	/data/HiC/sample_A_R2.fastq.gz
+sample_B	/data/HiC/sample_B_R1.fastq.gz	/data/HiC/sample_B_R2.fastq.gz
+```
+
+The file uses tab-separated columns. Each row represents one paired-end FASTQ pair.
+
+Manifest-based input preparation is under development. The current Juicer script uses sample directories containing a `fastq/` subdirectory.
+
+## 5. Run Juicer
+
+Submit each sample using `scripts/juicer/run_juicer.slurm`:
+
+```bash
+sbatch --export=ALL,SAMPLE_ID=sample_A \
+    scripts/juicer/run_juicer.slurm
+```
+
+Juicer generates `merged_nodups.txt`, `inter.hic`, and `inter_30.hic` in the sample's `aligned/` directory.
