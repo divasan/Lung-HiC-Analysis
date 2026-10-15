@@ -96,3 +96,33 @@ sbatch --export=ALL,SAMPLE_ID=sample_A \
 ```
 
 Juicer generates `merged_nodups.txt`, `inter.hic`, and `inter_30.hic` in the sample's `aligned/` directory.
+
+
+## 6. Merging Hi-C contact matrices
+
+Hi-C contact matrices were merged at 5 kb resolution using [hictk v2.2.0](https://github.com/paulsengroup/hictk) (Rossini and Paulsen, [*Bioinformatics*, 2024](https://doi.org/10.1093/bioinformatics/btae408)).
+
+The hictk Apptainer (`.sif`) container used in this analysis is available on [Zenodo](https://doi.org/10.5281/zenodo.23401176).
+
+Users who already have `.hic` files can skip the Juicer processing steps and start directly with merging.
+
+### Merge configuration
+
+The merging workflow uses three files:
+
+- `config/merge_hic_config.example.sh` — configuration template containing the hictk container path, output directories, merge resolution, and number of threads.
+- `config/merge_samples.tsv` — list of input `.hic` files.
+- `scripts/encode/merge_hic.slurm` — SLURM script for merging the contact matrices.
+
+All input `.hic` files must use the same reference genome assembly, compatible chromosome names, sizes, and order, and contain the selected merge resolution.
+
+### Run Hi-C merging
+
+Submit the merging job using:
+
+```bash
+sbatch scripts/encode/merge_hic.slurm
+```
+
+The script merges the input contact matrices at 5 kb resolution and validates the resulting `.hic` file using hictk.
+
