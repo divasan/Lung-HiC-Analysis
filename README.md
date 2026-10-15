@@ -24,8 +24,6 @@ Raw sequencing data for the ENCODE experiments are accessible through the linked
 | [ENCSR068FXF](https://www.encodeproject.org/experiments/ENCSR068FXF/) | [GSE237333](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE237333) | W78, male, 60 | Left lower lobe |
 | [ENCSR892BZA](https://www.encodeproject.org/experiments/ENCSR892BZA/) | [GSE237904](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE237904) | W62, female, 16 | Left lung |
 
-The in-house Hi-C datasets will be deposited in GEO upon public release.
-
 **In-house Hi-C data (3 healthy, 3 COPD):** GEO accession to be added upon release.
 
 ## 2. Hi-C processing using Juicer
