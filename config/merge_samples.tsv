@@ -1,0 +1,4 @@
+sample_id	hic_file
+sample_A	/path/to/sample_A.hic
+sample_B	/path/to/sample_B.hic
+sample_C	/path/to/sample_C.hic

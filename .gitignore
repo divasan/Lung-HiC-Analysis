@@ -1,0 +1,37 @@
+# Raw sequencing data
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.bam
+*.bai
+*.sam
+
+# Hi-C contact matrices
+*.hic
+*.cool
+*.mcool
+*.pairs
+*.pairs.gz
+merged_nodups.txt
+
+# Reference genome files
+*.fa
+*.fasta
+*.fai
+
+# SLURM output and logs
+*.log
+*.out
+*.err
+slurm-*
+
+# Credentials and local configurations
+.env
+*.pem
+*.key
+config.local.sh
+
+# macOS
+.DS_Store
+config/juicer_config.sh

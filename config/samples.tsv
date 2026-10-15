@@ -1,0 +1,6 @@
+
+sample_id	r1_fastq	r2_fastq
+sample_A	/data/HiC/sample_A_L001_R1.fastq.gz	/data/HiC/sample_A_L001_R2.fastq.gz
+sample_A	/data/HiC/sample_A_L002_R1.fastq.gz	/data/HiC/sample_A_L002_R2.fastq.gz
+sample_B	/data/HiC/sample_B_R1.fastq.gz	/data/HiC/sample_B_R2.fastq.gz
+
