@@ -30,22 +30,20 @@ Raw sequencing data for the ENCODE experiments are accessible through the linked
 
 **In-house Hi-C data (3 healthy, 3 COPD):** GEO accession to be added upon release.
 
-## 2. Hi-C processing using Juicer
-
-Hi-C sequencing data were processed using [Juicer v1.6](https://github.com/aidenlab/juicer) with BWA alignment to GRCh38 (hg38) and restriction-site information corresponding to the Arima Hi-C protocol.
-
-### Software versions
+### Software versions used in this analysis
 
 | Software | Version |
 |---|---|
 | Juicer | 1.6 (installation directory; exact release to be confirmed) |
+| Juicer Tools | 2.20.00 |
+| hictk | 2.2.0 |
+| Apptainer | Version to be confirmed |
 | BWA | 0.7.17-r1188 |
 | Java (OpenJDK) | 25.0.3 |
 | samtools | 1.17 |
 | SLURM | 25.05.6 |
 
 ### Juicer installation
-### Install Juicer
 
 Juicer v1.6 was used for Hi-C data processing. The software is available from the [Aiden Lab GitHub repository](https://github.com/aidenlab/juicer).
 
@@ -54,7 +52,6 @@ git clone https://github.com/aidenlab/juicer.git
 ```
 
 The Juicer installation path and required reference files are defined in `config/juicer_config.sh`.
-
 
 ## 3. Juicer configuration
 
@@ -102,31 +99,34 @@ sbatch --export=ALL,SAMPLE_ID=sample_A \
 Juicer generates `merged_nodups.txt`, `inter.hic`, and `inter_30.hic` in the sample's `aligned/` directory.
 
 
-## 6. Merging Hi-C contact matrices
+## 6. Merging Hi-C contact matrices and KR normalization
 
-Hi-C contact matrices were merged at 5 kb resolution using [hictk v2.2.0](https://github.com/paulsengroup/hictk) (Rossini and Paulsen, [*Bioinformatics*, 2024](https://doi.org/10.1093/bioinformatics/btae408)).
+Hi-C contact matrices from the in-house and ENCODE datasets were merged at 5 kb resolution using [hictk v2.2.0](https://github.com/paulsengroup/hictk) (Rossini and Paulsen, [*Bioinformatics*, 2024](https://doi.org/10.1093/bioinformatics/btae408)).
+
+The merged contact matrix was then processed using hictk to generate contact matrices at 5 kb, 10 kb, 20 kb, 100 kb, 500 kb, and 1 Mb resolutions. KR normalization was performed using Juicer Tools v2.20.00.
 
 The hictk Apptainer (`.sif`) container used in this analysis is available on [Zenodo](https://doi.org/10.5281/zenodo.23401176).
 
 Users who already have `.hic` files can skip the Juicer processing steps and start directly with merging.
 
-### Merge configuration
+### Merge and normalization configuration
 
-The merging workflow uses three files:
+The workflow uses three files:
 
-- `config/merge_hic_config.example.sh` — configuration template containing the hictk container path, output directories, merge resolution, and number of threads.
+- `config/merge_hic_config.example.sh` — configuration template containing the software paths, output directories, resolutions, and number of threads.
 - `config/merge_samples.tsv` — list of input `.hic` files.
-- `scripts/encode/merge_hic.slurm` — SLURM script for merging the contact matrices.
+- `scripts/encode/merge_zoomify_KR.slurm` — SLURM script for merging, generating additional resolutions, and KR normalization.
 
 All input `.hic` files must use the same reference genome assembly, compatible chromosome names, sizes, and order, and contain the selected merge resolution.
 
-### Run Hi-C merging
+### Run merging and KR normalization
 
-Submit the merging job using:
+Submit the job using:
 
 ```bash
-sbatch scripts/encode/merge_hic.slurm
+sbatch scripts/encode/merge_zoomify_KR.slurm
 ```
 
-The script merges the input contact matrices at 5 kb resolution and validates the resulting `.hic` file using hictk.
+The script merges the input contact matrices at 5 kb, generates the additional resolutions, and performs KR normalization. The output files are validated using hictk and Juicer Tools.
 
+The final multiresolution `.hic` file is saved in the output directory specified in the configuration file.
