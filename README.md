@@ -34,7 +34,7 @@ Raw sequencing data for the ENCODE experiments are accessible through the linked
 
 | Software | Version |
 |---|---|
-| Juicer | 1.6 (installation directory; exact release to be confirmed) |
+| Juicer | 1.6 |
 | Juicer Tools | 2.20.00 |
 | hictk | 2.2.0 |
 | Apptainer | Version to be confirmed |
