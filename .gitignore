@@ -34,4 +34,3 @@ config.local.sh
 
 # macOS
 .DS_Store
-config/juicer_config.sh
