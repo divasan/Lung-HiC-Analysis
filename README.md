@@ -1,13 +1,11 @@
 
 # Lung Hi-C Analysis
 
+![Status](https://img.shields.io/badge/Status-Under%20Active%20Development-orange)
+
 ### 3D genome organization in healthy and COPD human lung tissue
 
-> **Status: Under active development**
->
-> This repository is under active development. Scripts and documentation will be updated as the Hi-C analysis progresses and additional steps are validated.
-
-## Overview
+This repository is under active development. Scripts and documentation will be updated as the Hi-C analysis progresses and additional steps are validated.
 
 ## Overview
 
