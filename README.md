@@ -3,6 +3,12 @@
 
 ### 3D genome organization in healthy and COPD human lung tissue
 
+> **Status: Under active development**
+>
+> This repository is under active development. Scripts and documentation will be updated as the Hi-C analysis progresses and additional steps are validated.
+
+## Overview
+
 ## Overview
 
 This project investigates three-dimensional genome organization in healthy and chronic obstructive pulmonary disease (COPD) human lung tissue using Hi-C sequencing data.
