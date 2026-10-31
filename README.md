@@ -127,9 +127,9 @@ To control for differences in contact depth, a second set of Hi-C matrices was g
 
 For each sample, the sampling probability was calculated as:
 
-\[
+$$
 p_i = \frac{N_{\mathrm{target}}}{N_i}
-\]
+$$
 
 where \(N_i\) is the eligible contact count for sample \(i\), and \(N_{\mathrm{target}}\) is the common target depth.
 
