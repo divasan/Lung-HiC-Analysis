@@ -42,6 +42,7 @@ Raw sequencing data for the ENCODE experiments are accessible through the linked
 | Java (OpenJDK) | 25.0.3 |
 | samtools | 1.17 |
 | SLURM | 25.05.6 |
+| NumPy | 1.26.4 |
 
 ### Juicer installation
 
