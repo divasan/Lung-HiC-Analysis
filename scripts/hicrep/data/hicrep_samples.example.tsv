@@ -1,0 +1,13 @@
+sample_id	hic_file
+HD124	/path/to/inhouse/HD124_inter_30.hic
+HD133	/path/to/inhouse/HD133_inter_30.hic
+HD138	/path/to/inhouse/HD138_inter_30.hic
+COPD56	/path/to/inhouse/COPD56_inter_30.hic
+COPD65	/path/to/inhouse/COPD65_inter_30.hic
+COPD68	/path/to/inhouse/COPD68_inter_30.hic
+ENCSR068FXF	/path/to/encode/ENCSR068FXF.hic
+ENCSR305GRJ	/path/to/encode/ENCSR305GRJ.hic
+ENCSR446NJD	/path/to/encode/ENCSR446NJD.hic
+ENCSR673UZF	/path/to/encode/ENCSR673UZF.hic
+ENCSR749PID	/path/to/encode/ENCSR749PID.hic
+ENCSR892BZA	/path/to/encode/ENCSR892BZA.hic
