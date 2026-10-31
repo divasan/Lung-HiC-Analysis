@@ -112,8 +112,9 @@ Contact depths were calculated from the original `.hic` files using hictk v2.2.0
 - **Genome assembly:** GRCh38 (hg38)
 - **Resolution:** 100 kb
 - **Chromosomes:** Autosomes 1–22
-- **Contact type:** Cis interactions
-- **Genomic distance:** 0–5 Mb, including diagonal contacts
+- **Contact type:** Intrachromosomal (cis) interactions
+- **Genomic distance for depth matching:** 0–5 Mb, including same-bin (diagonal) contacts
+- **Downsampling:** Applied to all 100-kb contact pixels, including cis and trans interactions
 - **Normalization:** NONE (raw contact counts)
 
 The minimum eligible contact count across the 12 datasets was used as the common downsampling target.
